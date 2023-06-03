@@ -7,6 +7,7 @@ public class Node <T>{
 
     private int priority;
 
+
     public Node(T value) {
         this.value = value;
         this.next = null;
