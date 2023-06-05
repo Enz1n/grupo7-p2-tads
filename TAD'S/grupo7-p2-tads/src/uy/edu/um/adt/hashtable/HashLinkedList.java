@@ -105,7 +105,7 @@ public class HashLinkedList<K, V> implements MyList<HashNode<K, V>> {
     public void print() {
         HashNode<K, V> current = first;
         for (int i = 0; i < this.size(); i++) {
-            System.out.println(current.getValue() );
+            System.out.print(current.getValue() );
             if (current.getNext() != null) {
                 current = current.getNext();
             }
