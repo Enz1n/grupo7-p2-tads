@@ -128,4 +128,9 @@ public class PriorityQueue<T> implements MyPriorityQueue<T> {
         }
         System.out.println(aux.getValue());
     }
+
+    @Override
+    public boolean contains(T elemento) {
+        return false;
+    }
 }

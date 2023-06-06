@@ -9,4 +9,6 @@ public interface MyQueue<T> {
     T dequeueleft() throws EmptyQueueException;
     boolean isEmpty();
     void printqueue();
+
+    boolean contains(T elemento);
 }

@@ -121,4 +121,16 @@ public class Queue<T> implements MyQueue<T>{
         }
         System.out.println(aux.getValue());
     }
+
+    @Override
+    public boolean contains(T elemento) {
+        Nodo<T> nodoActual = primero;
+        while (nodoActual != null) {
+            if (nodoActual.getValue().equals(elemento)) {
+                return true;
+            }
+            nodoActual = nodoActual.getSiguiente();
+        }
+        return false;
+    }
 }
