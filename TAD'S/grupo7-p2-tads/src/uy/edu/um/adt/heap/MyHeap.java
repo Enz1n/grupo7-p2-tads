@@ -56,55 +56,72 @@ public class MyHeap <T extends Comparable<T>> implements Heap<T> {
 
     @Override
     public T deleteAndReturn() {
-        T nodoAEliminar = values[0];
-        T nodo = values[lastValuePosition-1];
-        values[0]=nodo;
-        int valuePos = 0;
+        if (lastValuePosition == 0) {
+            return null; // No hay elementos en el heap
+        }
+
+        T root = values[0];
+        T lastValue = values[lastValuePosition - 1];
+        values[0] = lastValue;
+        values[lastValuePosition - 1] = null; // Eliminar el último valor del heap
         lastValuePosition--;
-        if(isHeapMax==true){
-            while (getLeftChild(valuePos)!=null && getRightChild(valuePos)!=null){
-                T leftChild = getLeftChild(valuePos);
-                int leftChildPosition = getLeftChildPosition(valuePos);
-                T rightChild = getRightChild(valuePos);
-                int rightChildPosition = getRightChildPosition(valuePos);
-                if (nodo.compareTo(leftChild)>0 && nodo.compareTo(rightChild)>0){
-                    break;
-                }
-                else if (leftChild.compareTo(rightChild)>0) {
-                    values[valuePos]=leftChild;
-                    values[leftChildPosition]=nodo;
-                    valuePos=leftChildPosition;
-                }
-                else if (leftChild.compareTo(rightChild)<0) {
-                    values[valuePos]=rightChild;
-                    values[rightChildPosition]=nodo;
-                    valuePos=rightChildPosition;
-                }
-            }
+
+        if (isHeapMax) {
+            heapifyMax(0);
+        } else if (isHeapMin) {
+            heapifyMin(0);
         }
-        else {
-            while (getLeftChild(valuePos)!=null && getRightChild(valuePos)!=null){
-                T leftChild = getLeftChild(valuePos);
-                int leftChildPosition = getLeftChildPosition(valuePos);
-                T rightChild = getRightChild(valuePos);
-                int rightChildPosition = getRightChildPosition(valuePos);
-                if (nodo.compareTo(leftChild)<0 && nodo.compareTo(rightChild)<0){
-                    break;
-                }
-                else if (leftChild.compareTo(rightChild)<0) {
-                    values[valuePos]=leftChild;
-                    values[leftChildPosition]=nodo;
-                    valuePos=leftChildPosition;
-                }
-                else if (leftChild.compareTo(rightChild)>0) {
-                    values[valuePos]=rightChild;
-                    values[rightChildPosition]=nodo;
-                    valuePos=rightChildPosition;
-                }
-            }
-        }
-        return nodoAEliminar;
+
+        return root;
     }
+
+    // Restablecer el orden del heap en caso de ser un Heap máximo
+    private void heapifyMax(int index) {
+        int largest = index;
+        int leftChild = getLeftChildPosition(index);
+        int rightChild = getRightChildPosition(index);
+
+        if (leftChild < lastValuePosition && values[leftChild].compareTo(values[largest]) > 0) {
+            largest = leftChild;
+        }
+
+        if (rightChild < lastValuePosition && values[rightChild].compareTo(values[largest]) > 0) {
+            largest = rightChild;
+        }
+
+        if (largest != index) {
+            swap(index, largest);
+            heapifyMax(largest);
+        }
+    }
+
+    // Restablecer el orden del heap en caso de ser un Heap mínimo
+    private void heapifyMin(int index) {
+        int smallest = index;
+        int leftChild = getLeftChildPosition(index);
+        int rightChild = getRightChildPosition(index);
+
+        if (leftChild < lastValuePosition && values[leftChild].compareTo(values[smallest]) < 0) {
+            smallest = leftChild;
+        }
+
+        if (rightChild < lastValuePosition && values[rightChild].compareTo(values[smallest]) < 0) {
+            smallest = rightChild;
+        }
+
+        if (smallest != index) {
+            swap(index, smallest);
+            heapifyMin(smallest);
+        }
+    }
+
+    // Intercambiar dos elementos en el arreglo de valores
+    private void swap(int i, int j) {
+        T temp = values[i];
+        values[i] = values[j];
+        values[j] = temp;
+    }
+
 
     @Override
     public int size() {
